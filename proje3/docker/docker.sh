@@ -1,0 +1,11 @@
+docker run --name pg-disaster-recovery \
+  -e POSTGRES_PASSWORD=SecretPassword123 \
+  -e POSTGRES_USER=postgres \
+  -e POSTGRES_DB=testdb \
+  -v ~/postgres_backup/data:/var/lib/postgresql/data \
+  -v ~/postgres_backup/archive:/mnt/archive \
+  -p 5433:5432 \
+  -d postgres:15 \
+  -c wal_level=replica \
+  -c archive_mode=on \
+  -c archive_command='cp %p /mnt/archive/%f'
